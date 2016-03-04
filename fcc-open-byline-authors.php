@@ -2,10 +2,10 @@
 /*
 Plugin name: FCC Open Byline Authors
 Plugin URI: http://www.forumcomm.com/digital-network/
-Description: This plugin adds options to assign alternate post authors as bylines without creating WordPress user accounts. The selected author name and link will be shown on posts in place of the original post author. If no "Open Byline Author" is assigned to a post, the original post author will be use.
+Description: This plugin adds options to assign alternate post authors as bylines without creating WordPress user accounts. The selected author name and link will be shown on posts in place of the original post author. If no "Open Byline Author" is assigned to a post, the original post author will be used.
 Author: FCC (Ryan Veitch)
 Author URI: http://www.forumcomm.com/digital-network/
-Version: 1.1
+Version: 1.16.03.04
 */
 
 /* *** Version 1.1 Update Notes: ***
