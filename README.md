@@ -1,4 +1,4 @@
-# Open Byline authors
+# Open Byline Authors
 This plugin adds options to assign alternate post authors as bylines without creating WordPress user accounts. The selected author name and link will be shown on posts in place of the original post author. If no "Open Byline Author" is assigned to a post, the original post author will be used.
 
 
@@ -14,41 +14,100 @@ This plugin adds options to assign alternate post authors as bylines without cre
   - [ ] OBA Meta
     - [ ] Username = slug
     - [ ] old_id (for import remappings)
-    - [ ] Social links meta*
+    - [ ] Social links meta`*`
       - [ ] Auto-post to twitter & Facebook with publicise.
-    - [ ] OBA avatar image support*
+    - [ ] OBA avatar image support`*`
       - [ ] Image uploader on OBA edit page
-      - [ ] Avatar image links array*
+      - [ ] Avatar image links array`*`
 - [ ] **FEATURE:** OBA Multi-author support
-- [ ] Mapping matching WordPress core real user/author meta fields and  value format.
-  - [ ] Filter hooks
+- [ ] Filter hooks mapping matching WordPress core real user/author meta fields and value format.
+
+`*` *Match the WordPress core user meta value format.*
 
 
+Field         | WP Value             | WRX Value             | OBA Meta
+------------- | -------------------- | --------------------- | -------------
+User ID       | `ID`                 | `author_id`           | `user_id` (match real current user id)
+Old ID        | `author_id`          | `author_id`           | `old_id` (ID from import)
+Username      | `user_login  `       | `author_login`        | `slug`
+User Nicename | `user_nicename`      | —                     | `slug` (same as username)
+Nickname*     | `nickname`           | —                     | `nickname` (if null set to slug)
+Display Name  | `display_name `      | —                     | `name`s
+Email         | `user_email`         | `author_email`        | `author_email`
+First Name    | `first_name`         | `author_first_name`   | `author_first_name`
+Last Name     | `last_name`          | `author_last_name`    | `author_last_name`
+description   | `description`        | —                     | `description`
+Website       | `user_url`           | —                     | `user_url`
+Role          |                      | —                     | `old_role` :question:
+Avatar        |                      | —                     | `simple_local_avatar` :question:
 
-Field         | WP Value             | OBA Meta
-------------- | -------------------- | -------------
-author_id     | author_id            |
-Username      | author_login         | slug
-User Nicename | user_nicename        | slug (same as username)
-Nickname      | nickname             |
-Display name  | display_name         | name  :question:
-Name          | author_display_name  |
-Email         | author_login         |
-First Name    | author_first_name    |
-Last Name     | author_last_name     |
-description   | description          |
-Website       | user_url             |
-Role          | role                 | old_role?
-Avatar        | *                    | simple_local_avatar :question:
-Old ID        | author_id            |
+`*` *User meta.*
 
 **Look Into:**
+- user_registered
+- primary_blog
+- source_domain
 - Social Links
 - Sites / Owner of Sites / Sites owned/contributed to
 - number of posts of posts?
 - posts attributed to?
 
-#### Reference
+**WXR Post Author and "Guest Author" Custom Taxonomy**
+```xml
+<item>
+  <dc:creator><![CDATA[admin]]></dc:creator>
+  <category domain="author" nicename="admin"><![CDATA[admin]]></category>
+</item>
+```
+- domain="open_byline_author"
+- nicename="oba-slug"
+
+
+## Reference
+
+#### Get Term Object
+
+The fields returned are:
+
+- `term_id` (int)
+- `name`
+- `slug`
+- `term_group` (int) :question:
+- `term_taxonomy_id` (int)
+- `taxonomy`
+- `description`
+- `parent` (int)
+- `count` (int)
+
+#### Get User Data
+
+**users**
+
+- ID
+- user_login
+- user_pass
+- user_nicename
+- user_email
+- user_url
+- user_registered
+- display_name
+
+**user_meta**
+- first_name
+- last_name
+- nickname
+- description
+- wp_capabilities (array)
+- admin_color (Theme of your admin page. Default is fresh.)
+- closedpostboxes_page
+- primary_blog
+- rich_editing
+- source_domain
+
+#### Reference Links
 - `wp_update_term( $term_id, $taxonomy, $args )`
+- https://www.smashingmagazine.com/2015/12/how-to-use-term-meta-data-in-wordpress/
 - https://codex.wordpress.org/Function_Reference/wp_update_term
+- https://codex.wordpress.org/Function_Reference/get_term
+- https://codex.wordpress.org/Function_Reference/get_userdata
 - https://codex.wordpress.org/Users_Your_Profile_Screen
