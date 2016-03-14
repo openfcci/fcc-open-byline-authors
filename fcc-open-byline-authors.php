@@ -1,17 +1,13 @@
 <?php
 /*
 Plugin name: FCC Open Byline Authors
-Plugin URI: http://www.forumcomm.com/digital-network/
+Plugin URI: http://www.forumcomm.com
 Description: This plugin adds options to assign alternate post authors as bylines without creating WordPress user accounts. The selected author name and link will be shown on posts in place of the original post author. If no "Open Byline Author" is assigned to a post, the original post author will be used.
-Author: FCC (Ryan Veitch)
-Author URI: http://www.forumcomm.com/digital-network/
-Version: 1.16.03.04
+Author: FCC Interactive
+Author URI: http://www.forumcomm.com
+Version: 1.2
 */
 
-/* *** Version 1.1 Update Notes: ***
-* Fixed bug that caused the original author to also be displayed as the OBA
-* Added rewrite rule flushing on plugin activation/deactivation to ensure author pages are called correctly
-*/
 
 /*************************** Plugin Registration  *****************************
 *******************************************************************************
@@ -177,7 +173,13 @@ function byline_function() {
   }
 }
 
-// Author Name Replacement Function
+
+/**
+ * Filter Author Name
+ *
+ * @author Ryan Veitch <ryan.veitch@forumcomm.com>
+ * @since 1.15.07.16
+ */
 function modify_author_name( $name ) {
   global $post;
   $author_name = get_the_author_meta('display_name');
@@ -197,7 +199,34 @@ function modify_author_name( $name ) {
   }
 }
 
-// Author Link Replacement Function
+ /**
+  * Filter Author Display Name
+  *
+  * @author Ryan Veitch <ryan.veitch@forumcomm.com>
+  * @since 1.16.03.14
+  */
+function get_the_author_meta_filter( $field = '', $user_id = false ) {
+	global $post;
+	global $authordata;
+	$byline_terms = get_the_terms( $post->ID, 'open_byline_author' );
+	if( !is_wp_error( $byline_terms ) && ( !empty( $byline_terms ) ) ) {
+		$byline_term = array_pop($byline_terms);
+		$display_name = $byline_term->name;
+		return $display_name;
+	}
+	else {
+		$display_name = $authordata->data->display_name;
+		return $display_name;
+	}
+}
+add_filter( 'get_the_author_display_name', 'get_the_author_meta_filter' );
+
+/**
+ * Filter Author Link
+ *
+ * @author Ryan Veitch <ryan.veitch@forumcomm.com>
+ * @since 1.15.07.16
+ */
 function modify_author_link( $link ) {
   global $post;
   $byline_terms = get_the_terms( $post->ID, 'open_byline_author' );
@@ -212,6 +241,56 @@ function modify_author_link( $link ) {
     return $link;
   }
 }
+
+ /**
+  * Filter Author Bio (Description)
+  *
+  * @author Ryan Veitch <ryan.veitch@forumcomm.com>
+  * @since 1.16.03.14
+  */
+function get_the_author_description_filter( $description ) {
+		global $post;
+	  $byline_terms = get_the_terms( $post->ID, 'open_byline_author' );
+	  if( !is_wp_error( $byline_terms ) && ( !empty( $byline_terms ) ) ) {
+	    $byline_term = array_pop($byline_terms);
+	    $description = $byline_term->description;
+	    return $description;
+	  }
+	  else {
+	    $description = $description;
+	    return $description;
+	  }
+}
+add_filter( 'get_the_author_description', 'get_the_author_description_filter' );
+
+ /**
+	* Filter Author Avatar
+	*
+	* @author Ryan Veitch <ryan.veitch@forumcomm.com>
+	* @since 1.16.03.14
+	*/
+function get_the_author_avatar_filter( $avatar, $size ) {
+		global $post;
+	  $byline_terms = get_the_terms( $post->ID, 'open_byline_author' );
+	  if( !is_wp_error( $byline_terms ) && ( !empty( $byline_terms ) ) ) {
+	    $byline_term = array_pop($byline_terms);
+			$image = get_term_meta( $byline_term->term_id, 'image', true );
+			if ( ! empty( $image ) ) {
+				$avatar = wp_get_attachment_image( $image, array(90,90));
+			} else {
+				if ( empty( $size ) ) { $size = '90'; } else { $size = $size; }
+				$host = is_ssl() ? 'https://secure.gravatar.com' : 'http://0.gravatar.com';
+				$default = "$host/avatar/ad516503a11cd5ca435acc9bb6523536?s={$size}";
+				$avatar = "<img src='" . $default . "' class='avatar avatar-{$size} photo avatar-default' height='{$size}' width='{$size}' />";
+			}
+	    return $avatar;
+	  }
+	  else {
+	    $avatar = $avatar;
+	    return $avatar;
+	  }
+}
+add_filter( 'get_avatar', 'get_the_author_avatar_filter' );
 
 // End Plugin Code //
 ?>

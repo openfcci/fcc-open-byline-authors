@@ -1,0 +1,19 @@
+== Changelog ==
+= 1.2 =
+Release date: March 14th, 2016
+
+* Enhancement: Added Author Description Filtering
+* Enhancement: Added Author Avatar Filtering
+* Enhancement: Added Author Meta Display Name Filtering
+
+= 1.1 =
+Release date: October 19th, 2015
+
+* Enhancement: Added rewrite rule flushing on plugin activation/deactivation to ensure author pages are called correctly
+* Bug Fix: Fixed bug that caused the original author to also be displayed as the OBA
+
+
+= 1.0 =
+Release Date: July 16, 2015
+
+* Initial release
