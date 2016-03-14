@@ -4,12 +4,7 @@ This plugin adds options to assign alternate post authors as bylines without cre
 
 ## Roadmap
 
-- [ ] **FEATURE:** Import & remap/convert OBA terms from WP Importer WXR export file.
-- [ ] **FEATURE:** Generate OBA term from existing real user/author
-- [ ] **FEATURE:** Ability to link OBA term to real user/author
-  - [ ] Sync meta between OBA and real user/author
-    - [ ] Show Link :link: icon if OBA term linked to real user
-- **ENHANCEMENTS:** OBA Meta & Edit Page
+- **ENHANCEMENTS:** [Extending The Term Form - OBA Edit Page Meta](https://www.smashingmagazine.com/2015/12/how-to-use-term-meta-data-in-wordpress/#extending-the-term-form)
   - [ ] Show all meta as editable fields on the OBA edit page
   - [ ] OBA Meta
     - [ ] Username = slug
@@ -19,7 +14,6 @@ This plugin adds options to assign alternate post authors as bylines without cre
     - [ ] OBA avatar image support`*`
       - [ ] Image uploader on OBA edit page
       - [ ] Avatar image links array`*`
-- [ ] **FEATURE:** OBA Multi-author support
 - [ ]**FEATURE - FILTER HOOKS:** Filter hooks mapping matching WordPress core real user/author meta fields and value format.
   - [x] Author Name (the_author)
   - [x] Author Display Name (get_the_author_display_name)
@@ -28,9 +22,17 @@ This plugin adds options to assign alternate post authors as bylines without cre
   - [x] Author Avatar/Profile Picture (get_avatar)
   - [ ] Author Email
   - [ ] Author social links
+  - [ ] More/Misc (the goal is to mirror most of the *useful* fields in the User Profile)
+- [ ] **FEATURE:** OBA Multi-author support
+- [ ] **FEATURE:** Import & remap/convert OBA terms from WP Importer WXR export file.
+- [ ] **FEATURE:** Generate OBA term from existing real user/author
+- [ ] **FEATURE:** Ability to link OBA term to real user/author
+  - [ ] Sync meta between OBA and real user/author
+    - [ ] Show Link :link: icon if OBA term linked to real user
 
 `*` *Match the WordPress core user meta value format.*
 
+## OBA/User Value Map
 
 Field         | WP Value             | WRX Value             | OBA Meta
 ------------- | -------------------- | --------------------- | -------------
