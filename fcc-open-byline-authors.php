@@ -5,7 +5,7 @@ Plugin URI: http://www.forumcomm.com
 Description: This plugin adds options to assign alternate post authors as bylines without creating WordPress user accounts. The selected author name and link will be shown on posts in place of the original post author. If no "Open Byline Author" is assigned to a post, the original post author will be used.
 Author: FCC Interactive
 Author URI: http://www.forumcomm.com
-Version: 1.2
+Version: 1.2.1
 */
 
 
@@ -266,10 +266,12 @@ add_filter( 'get_the_author_description', 'get_the_author_description_filter' );
  /**
 	* Filter Author Avatar
 	*
+	* Reference Args: get_avatar( $avatar = '', $id_or_email, $size = 96, $default = '', $alt = '' )
 	* @author Ryan Veitch <ryan.veitch@forumcomm.com>
 	* @since 1.16.03.14
+	* @todo Enhance sizing functions/arguments
 	*/
-function get_the_author_avatar_filter( $avatar, $size ) {
+function get_the_author_avatar_filter( $avatar, $size = 90) {
 		global $post;
 	  $byline_terms = get_the_terms( $post->ID, 'open_byline_author' );
 	  if( !is_wp_error( $byline_terms ) && ( !empty( $byline_terms ) ) ) {

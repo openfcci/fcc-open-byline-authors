@@ -1,4 +1,9 @@
 == Changelog ==
+= 1.2.1 =
+Release date: March 14th, 2016
+* Bug Fix: Fixed missing argument error with get_the_author_avatar_filter()
+* Updated roadmap/readme
+
 = 1.2 =
 Release date: March 14th, 2016
 

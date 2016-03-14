@@ -20,7 +20,14 @@ This plugin adds options to assign alternate post authors as bylines without cre
       - [ ] Image uploader on OBA edit page
       - [ ] Avatar image links array`*`
 - [ ] **FEATURE:** OBA Multi-author support
-- [ ] Filter hooks mapping matching WordPress core real user/author meta fields and value format.
+- [ ]**FEATURE - FILTER HOOKS:** Filter hooks mapping matching WordPress core real user/author meta fields and value format.
+  - [x] Author Name (the_author)
+  - [x] Author Display Name (get_the_author_display_name)
+  - [x] Author Archive Permalink (author_link)
+  - [x] Author Description/Bio (get_the_author_description)
+  - [x] Author Avatar/Profile Picture (get_avatar)
+  - [ ] Author Email
+  - [ ] Author social links
 
 `*` *Match the WordPress core user meta value format.*
 
