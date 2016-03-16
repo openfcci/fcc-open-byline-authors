@@ -25,6 +25,9 @@ register_deactivation_hook( __FILE__, 'fcc_open_byline_flush_rewrites' );
 // Call fcc_open_byline_menu function to load plugin menu in dashboard
 add_action( 'admin_menu', 'fcc_open_byline_menu' );
 
+ require_once( plugin_dir_path( __FILE__ ) . '/includes/byline-import.php' );
+  require_once( plugin_dir_path( __FILE__ ) . '/includes/term-meta.php' );
+
 // Create WordPress admin menu
 function fcc_open_byline_menu(){
 
@@ -269,7 +272,7 @@ add_filter( 'get_the_author_description', 'get_the_author_description_filter' );
 	* @author Ryan Veitch <ryan.veitch@forumcomm.com>
 	* @since 1.16.03.14
 	*/
-function get_the_author_avatar_filter( $avatar, $size ) {
+function get_the_author_avatar_filter( $avatar, $size = 90 ) {
 		global $post;
 	  $byline_terms = get_the_terms( $post->ID, 'open_byline_author' );
 	  if( !is_wp_error( $byline_terms ) && ( !empty( $byline_terms ) ) ) {
