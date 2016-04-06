@@ -25,6 +25,13 @@ register_deactivation_hook( __FILE__, 'fcc_open_byline_flush_rewrites' );
 // Call fcc_open_byline_menu function to load plugin menu in dashboard
 add_action( 'admin_menu', 'fcc_open_byline_menu' );
 
+function add_scripts(){
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-widget' );
+  wp_enqueue_script( 'jquery-ui-autocomplete' );
+}
+add_action('admin_enqueue_scripts', 'add_scripts');
+
  require_once( plugin_dir_path( __FILE__ ) . '/includes/byline-import.php' );
   require_once( plugin_dir_path( __FILE__ ) . '/includes/term-meta.php' );
 
@@ -294,6 +301,114 @@ function get_the_author_avatar_filter( $avatar, $size = 90 ) {
 	  }
 }
 add_filter( 'get_avatar', 'get_the_author_avatar_filter' );
+
+/** Suggest an already existing user using Ajax when adding an open byline author.
+ *
+ *
+ * @author Josh Slebodnik <josh.slebodnikh@forumcomm.com>
+ * @since 1.16.03.24
+ */
+function users_ajax_request() {
+
+	// WP_User_Query arguments
+	$args = array (
+		'meta_key' => 'last_name',
+		'orderby' => 'meta_value',
+		'order' => 'ASC'
+	);
+	$suggestions = array();
+
+	// The User Query
+	$user_query = new WP_User_Query( $args );
+
+	// The User Loop
+	if ( ! empty( $user_query->results ) ) {
+		foreach ( $user_query->results as $user ) {
+			// do something
+			$suggestion = array();
+			$suggestion['user'] = $user->display_name;
+			$suggestions[] = $suggestion;
+		}
+	} else {
+		// no users found
+	}
+
+	wp_reset_query();
+
+
+		$response = json_encode( $suggestions );
+	// $availableTags = array(
+	// 	"ActionScript",
+	// 	"AppleScript",
+	// 	"Asp",
+	// 	"BASIC",
+	// 	"C",
+	// 	"C++",
+	// 	"Clojure",
+	// 	"COBOL",
+	// 	"ColdFusion",
+	// 	"Erlang",
+	// 	"Fortran",
+	// 	"Groovy",
+	// 	"Haskell",
+	// 	"Java",
+	// 	"JavaScript",
+	// 	"Lisp",
+	// 	"Perl",
+	// 	"PHP",
+	// 	"Python",
+	// 	"Ruby",
+	// 	"Scala",
+	// 	"Scheme"
+	// );
+	// $response = json_encode($availableTags);
+		echo $response;
+	wp_die(); // this is required to terminate immediately and return a proper response
+}
+add_action( 'wp_ajax_users_ajax_request', 'users_ajax_request' );
+add_action( 'wp_ajax_nopriv_users_ajax_request', array('users_ajax_request' ) );
+
+/* Autocomplete Javascript for suggesting a user */
+//http://127.0.0.1/av/avtheme/wp-admin/admin-ajax.php?callback=?&action=users_ajax_request
+function user_script(){
+	?>
+
+	<script type="text/javascript" >
+		jQuery(document).ready(function($) {
+		// 	//
+		// 	var nameValue = $('.taxonomy-open_byline_author #tag-name').val();
+		//
+		// 	var data = {
+		// 		'action': 'users_ajax_request',
+		// 		'whatever': 1234
+		// 	};
+		//
+		// 	// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+		// 	jQuery.post(ajaxurl, data, function(response) {
+		// 		alert('Got this from the server: ' + response);
+		// 	});
+			var ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
+
+	     var ajaxaction = 'users_ajax_request';
+			 
+
+	     $("#tag-name").autocomplete({
+	         delay: 0,
+	         minLength: 0,
+	         source: function(req, response){
+	             $.getJSON(ajaxurl+'?callback=?&action='+ajaxaction, req, response);
+	         },
+					 select: function(event, ui) {
+							 window.location.href=ui.item.link;
+					 }
+	     });
+
+		});
+	</script>
+	<?php
+}
+add_action( 'admin_footer', 'user_script' );
+
 
 // End Plugin Code //
 ?>

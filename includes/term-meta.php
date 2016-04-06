@@ -1,22 +1,8 @@
 <?php
-
 /* Adds custom fields to add open byline author */
 add_action( 'open_byline_author_add_form_fields', 'add_custom_fields', 10, 2 );
 function add_custom_fields($taxonomy) {
-    global $feature_groups;
     ?>
-    <!-- Adds Username Field -->
-    <div class="form-field term-group">
-      <label for="user_name">Username</label>
-      <input id="user_name" name="user_name" type="text" size="40"> </input>
-      <p>This will be the slug if field is empty.</p>
-    </div>
-    <!-- Adds User Nicename Field -->
-    <div class="form-field term-group">
-      <label for="nicename">User Nice Name</label>
-      <input id="nicename" name="nicename" type="text" size="40"> </input>
-      <p>This will be the slug if field is empty.</p>
-    </div>
     <!-- Adds User ID Field -->
     <div class="form-field term-group">
       <label for="user_id">User ID</label>
@@ -26,16 +12,6 @@ function add_custom_fields($taxonomy) {
     <div class="form-field term-group">
       <label for="old_id">Old ID</label>
       <input id="old_id" name="old_id" type="text" size="40"> </input>
-    </div>
-    <!-- Adds Nickname Field -->
-    <div class="form-field term-group">
-      <label for="nickname">Nickname</label>
-      <input id="nickname" name="nickname" type="text" size="40"> </input>
-    </div>
-    <!-- Adds Display Name Field -->
-    <div class="form-field term-group">
-      <label for="name">Display Name</label>
-      <input id="name" name="name" type="text" size="40"> </input>
     </div>
     <!-- Adds Email Field -->
     <div class="form-field term-group">
@@ -62,76 +38,86 @@ function add_custom_fields($taxonomy) {
       <label for="old_role">Role</label>
       <input id="old_role" name="old_role" type="text" size="40"> </input>
     </div>
-
     <?php
 }
-
-/* Save fields when adding a open byline author */
-add_action( 'created_open_byline_author', 'save_add_fields_meta', 10, 2 );
-
 function save_add_fields_meta( $term_id, $tt_id ){
-    if( isset( $_POST['user_name'] ) && '' !== $_POST['user_name'] ){
-        /* Save Username */
-        $group = sanitize_title( $_POST['user_name'] );
-        add_term_meta( $term_id, 'user_name' , $group, true );
-    }else{
-        /* save slug if there is no username in it */
-        $term = get_term($term_id, 'open_byline_author');
-        add_term_meta( $term_id, 'user_name' , $term->slug, true );
-    }
-    if( isset( $_POST['nicename'] ) && '' !== $_POST['nicename'] ){
-        /* Save Nice Name */
-        $group = sanitize_title( $_POST['nicename'] );
-        add_term_meta( $term_id, 'nicename', $group, true );
-    }else{
-        /* save slug if there is no nicename in it */
-        $term = get_term($term_id, 'open_byline_author');
-        add_term_meta( $term_id, 'nicename' , $term->slug, true );
-    }
+
+    /* Adds Facebook meta */
+    add_term_meta( $term_id, 'facebook', '', true );
+
+    /* Adds twitter meta */
+    add_term_meta( $term_id, 'twitter', '', true );
+
+    /* Adds pinterest meta */
+    add_term_meta( $term_id, 'pinterest', '', true );
+
+    /* Adds googleplus meta */
+    add_term_meta( $term_id, 'googleplus', '', true );
+
+    /* Adds instagram meta */
+    add_term_meta( $term_id, 'instagram', '', true );
+
+    /* Adds linkedin meta */
+    add_term_meta( $term_id, 'linkedin', '', true );
+
+    /* Adds Image Url meta */
+    add_term_meta( $term_id, 'image_url', '', true );
+
     if( isset( $_POST['user_id'] ) && '' !== $_POST['user_id'] ){
         /* Save User ID */
-        $group = sanitize_title( $_POST['user_id'] );
-        add_term_meta( $term_id, 'user_id', $group, true );
+        $term_meta = sanitize_text_field( $_POST['user_id'] );
+        add_term_meta( $term_id, 'user_id', $term_meta, true );
+    }else{
+        add_term_meta( $term_id, 'user_id', '', true );
     }
     if( isset( $_POST['old_id'] ) && '' !== $_POST['old_id'] ){
         /* Save Old User ID */
-        $group = sanitize_title( $_POST['old_id'] );
-        add_term_meta( $term_id, 'old_id', $group, true );
+        $term_meta = sanitize_text_field( $_POST['old_id'] );
+        add_term_meta( $term_id, 'old_id', $term_meta, true );
+    }else{
+        add_term_meta( $term_id, 'old_id', '', true );
     }
     if( isset( $_POST['nickname'] ) && '' !== $_POST['nickname'] ){
         /* Save Nickname */
-        $group = sanitize_title( $_POST['nickname'] );
-        add_term_meta( $term_id, 'nickname', $group, true );
-    }
-    if( isset( $_POST['name'] ) && '' !== $_POST['name'] ){
-        /* Save Display Name */
-        $group = sanitize_title( $_POST['name'] );
-        add_term_meta( $term_id, 'name', $group, true );
+        $term_meta = sanitize_text_field( $_POST['nickname'] );
+        add_term_meta( $term_id, 'nickname', $term_meta, true );
+    }else{
+        add_term_meta( $term_id, 'nickname', '', true );
     }
     if( isset( $_POST['author_email'] ) && '' !== $_POST['author_email'] ){
         /* Save Email */
-        $group = sanitize_email( $_POST['author_email'] );
-        add_term_meta( $term_id, 'author_email', $group, true );
+        $term_meta = sanitize_email( $_POST['author_email'] );
+        add_term_meta( $term_id, 'author_email', $term_meta, true );
+    }else{
+        add_term_meta( $term_id, 'author_email', '', true );
     }
     if( isset( $_POST['author_first_name'] ) && '' !== $_POST['author_first_name'] ){
         /* Save First Name */
-        $group = sanitize_title( $_POST['author_first_name'] );
-        add_term_meta( $term_id, 'author_first_name', $group, true );
+        $term_meta = sanitize_text_field( $_POST['author_first_name'] );
+        add_term_meta( $term_id, 'author_first_name', $term_meta, true );
+    }else{
+        add_term_meta( $term_id, 'author_first_name', $term_meta, true );
     }
     if( isset( $_POST['author_last_name'] ) && '' !== $_POST['author_last_name'] ){
         /* Save Last Name */
-        $group = sanitize_title( $_POST['author_last_name'] );
-        add_term_meta( $term_id, 'author_last_name', $group, true );
+        $term_meta = sanitize_text_field( $_POST['author_last_name'] );
+        add_term_meta( $term_id, 'author_last_name', $term_meta, true );
+    }else{
+        add_term_meta( $term_id, 'author_last_name', '', true );
     }
     if( isset( $_POST['user_url'] ) && '' !== $_POST['user_url'] ){
         /* Save Website */
-        $group = esc_url( $_POST['user_url'] );
-        add_term_meta( $term_id, 'user_url', $group, true );
+        $term_meta = esc_url( $_POST['user_url'] );
+        add_term_meta( $term_id, 'user_url', $term_meta, true );
+    }else{
+        add_term_meta( $term_id, 'user_url', '', true );
     }
     if( isset( $_POST['old_role'] ) && '' !== $_POST['old_role'] ){
         /* Save Role */
-        $group = sanitize_title( $_POST['old_role'] );
-        add_term_meta( $term_id, 'old_role', $group, true );
+        $term_meta = sanitize_text_field( $_POST['old_role'] );
+        add_term_meta( $term_id, 'old_role', $term_meta, true );
+    }else{
+        add_term_meta( $term_id, 'old_role', '', true );
     }
 }
 
@@ -139,18 +125,6 @@ function save_add_fields_meta( $term_id, $tt_id ){
 add_action( 'open_byline_author_edit_form_fields', 'edit_text_field', 10, 2 );
 
 function edit_text_field( $term, $taxonomy ){
-
-    global $byline_username;
-    global $byline_nicename;
-    global $byline_user_id;
-    global $byline_old_id;
-    global $byline_nickname;
-    global $byline_display_name;
-    global $byline_email;
-    global $byline_first_name;
-    global $byline_last_name;
-    global $byline_website;
-    global $byline_role;
 
     $byline_username = get_term_meta( $term->term_id, 'user_name', true );
     $byline_nicename = get_term_meta( $term->term_id, 'nicename', true );
@@ -163,55 +137,20 @@ function edit_text_field( $term, $taxonomy ){
     $byline_last_name = get_term_meta( $term->term_id, 'author_last_name', true );
     $byline_website = get_term_meta( $term->term_id, 'user_url', true );
     $byline_role = get_term_meta( $term->term_id, 'old_role', true );
-
+    $byline_facebook = get_term_meta($term->term_id, 'facebook', true);
+    $byline_twitter = get_term_meta($term->term_id, 'twitter', true);
+    $byline_pinterest = get_term_meta($term->term_id, 'pinterest', true);
+    $byline_googleplus = get_term_meta($term->term_id, 'googleplus', true);
+    $byline_instagram = get_term_meta($term->term_id, 'instagram', true);
+    $byline_linkedin = get_term_meta($term->term_id, 'linkedin', true);
+    $byline_image_url = get_term_meta($term->term_id, 'image_url', true);
     ?>
     <!-- Username Field -->
     <tr class="form-field term-group-wrap">
-        <th scope="row"><label for="user_name">Username</label></th>
+        <th scope="row"><label for="user_name"><h2>Name</h2>Username</label></th>
         <td>
-          <input id="user_name" name="user_name" type="text" size="40" value="<?php echo $byline_username; ?>"> </input>
-        </td>
-    </tr>
-    <!-- User Nice Name Field -->
-    <tr class="form-field term-group-wrap">
-        <th scope="row"><label for="nicename">User Nice Name</label></th>
-        <td>
-          <input id="nicename" name="nicename" type="text" size="40" value="<?php echo $byline_nicename; ?>"> </input>
-        </td>
-    </tr>
-    <!-- User ID Field -->
-    <tr class="form-field term-group-wrap">
-        <th scope="row"><label for="user_id">User ID</label></th>
-        <td>
-          <input id="user_id" name="user_id" type="text" size="40" value="<?php echo $byline_user_id; ?>"> </input>
-        </td>
-    </tr>
-    <!-- Old ID Field -->
-    <tr class="form-field term-group-wrap">
-        <th scope="row"><label for="old_id">User Old ID</label></th>
-        <td>
-          <input id="old_id" name="old_id" type="text" size="40" value="<?php echo $byline_old_id; ?>"> </input>
-        </td>
-    </tr>
-    <!-- Nickname Field -->
-    <tr class="form-field term-group-wrap">
-        <th scope="row"><label for="nickname">Nickname</label></th>
-        <td>
-          <input id="nickname" name="nickname" type="text" size="40" value="<?php echo $byline_nickname; ?>"> </input>
-        </td>
-    </tr>
-    <!-- Display Name Field -->
-    <tr class="form-field term-group-wrap">
-        <th scope="row"><label for="name">Display Name</label></th>
-        <td>
-          <input id="name" name="name" type="text" size="40" value="<?php echo $byline_display_name; ?>"> </input>
-        </td>
-    </tr>
-    <!-- Email Field -->
-    <tr class="form-field term-group-wrap">
-        <th scope="row"><label for="author_email">Email</label></th>
-        <td>
-          <input id="author_email" name="author_email" type="text" size="40" value="<?php echo $byline_email; ?>"> </input>
+          <h2>&nbsp;</h2>
+          <input id="user_name" name="user_name" type="text" size="40" value="" placeholder="<?php echo $term->slug; ?>" readonly="readonly"> </input>
         </td>
     </tr>
     <!-- First Name Field -->
@@ -228,6 +167,37 @@ function edit_text_field( $term, $taxonomy ){
           <input id="author_last_name" name="author_last_name" type="text" size="40" value="<?php echo $byline_last_name; ?>"> </input>
         </td>
     </tr>
+    <!-- Nickname Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="nickname">Nickname</label></th>
+        <td>
+          <input id="nickname" name="nickname" type="text" size="40" value="" placeholder="<?php echo $term->name; ?>" readonly="readonly">
+        </td>
+    </tr>
+    <!-- Display Name Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="displayname">Display Name</label></th>
+        <td>
+          <input id="displayname" name="displayname" type="text" size="40" value="" placeholder="<?php echo $term->name; ?>" readonly="readonly"> </input>
+        </td>
+    </tr>
+    <!-- User ID Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="user_id">User ID</label></th>
+        <td>
+          <input id="user_id" name="user_id" type="text" size="40" value="<?php echo $byline_user_id; ?>"> </input>
+          <p class="<?php echo $byline_user_id; ?>">
+            <p class="description">The User ID of the corresponding real author on the current network (if one exists).</p>
+        </td>
+    </tr>
+    <!-- Email Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="author_email"><h2>Contact Info</h2>Email</label></th>
+        <td>
+          <h2>&nbsp;</h2>
+          <input id="author_email" name="author_email" type="text" size="40" value="<?php echo $byline_email; ?>"> </input>
+        </td>
+    </tr>
     <!-- Website Field -->
     <tr class="form-field term-group-wrap">
         <th scope="row"><label for="user_url">Website</label></th>
@@ -235,73 +205,150 @@ function edit_text_field( $term, $taxonomy ){
           <input id="user_url" name="user_url" type="text" size="40" value="<?php echo $byline_website; ?>"> </input>
         </td>
     </tr>
+    <!-- Facebook Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="facebook">Facebook</label></th>
+        <td>
+          <input id="facebook" name="facebook" type="text" size="40" value="<?php echo $byline_facebook; ?>"> </input>
+        </td>
+    </tr>
+    <!-- Twitter Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="twitter">Twitter</label></th>
+        <td>
+          <input id="twitter" name="twitter" type="text" size="40" value="<?php echo $byline_twitter; ?>"> </input>
+        </td>
+    </tr>
+    <!-- Pinterest Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="pinterest">Pinterest</label></th>
+        <td>
+          <input id="pinterest" name="pinterest" type="text" size="40" value="<?php echo $byline_pinterest; ?>"> </input>
+        </td>
+    </tr>
+    <!-- Google Plus Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="googleplus">Google Plus</label></th>
+        <td>
+          <input id="googleplus" name="googleplus" type="text" size="40" value="<?php echo $byline_googleplus; ?>"> </input>
+        </td>
+    </tr>
+    <!-- Instagram Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="instagram">Instagram</label></th>
+        <td>
+          <input id="instagram" name="instagram" type="text" size="40" value="<?php echo $byline_instagram; ?>"> </input>
+        </td>
+    </tr>
+    <!-- Linkedin Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="linkedin">Linkedin</label></th>
+        <td>
+          <input id="linkedin" name="linkedin" type="text" size="40" value="<?php echo $byline_linkedin; ?>"> </input>
+        </td>
+    </tr>
+    <!-- User Nicename Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row">
+          <label for="nicename">
+          <h2>Misc.</h2>
+          User Nicename</label>
+        </th>
+        <td>
+          <h2>&nbsp;</h2>
+          <input id="nicename" name="nicename" type="text" size="40" value="" placeholder="<?php echo $term->slug; ?>" readonly="readonly"> </input>
+        </td>
+    </tr>
     <!-- Role Field -->
     <tr class="form-field term-group-wrap">
         <th scope="row"><label for="old_role">Role</label></th>
         <td>
-          <input id="old_role" name="old_role" type="text" size="40" value="<?php echo $byline_role; ?>"> </input>
+          <input id="old_role" name="old_role" type="text" size="40" value="<?php echo $byline_role; ?>" readonly="readonly"> </input>
+          <p class="description">From import. (read-only)</p>
+        </td>
+    </tr>
+    <!-- Old ID Field -->
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="old_id">User Old ID</label></th>
+        <td>
+          <input id="old_id" name="old_id" type="text" size="40" value="<?php echo $byline_old_id; ?>" readonly="readonly"> </input>
+          <p class="description">From import. (read-only)</p>
         </td>
     </tr>
     <?php
 }
 
 /* Update Fields when editing */
-add_action( 'edited_open_byline_author', 'update_username_meta', 10, 2 );
+add_action( 'edited_open_byline_author', 'update_byline_meta', 10, 2 );
 
-function update_username_meta( $term_id, $tt_id ){
-    /* Update Username */
-    if( isset( $_POST['user_name'] ) && '' !== $_POST['user_name'] ){
-        $group = sanitize_title( $_POST['user_name'] );
-        update_term_meta( $term_id, 'user_name', $group );
-    }
-    /* Update Nicename */
-    if( isset( $_POST['nicename'] ) && '' !== $_POST['nicename'] ){
-        $group = sanitize_title( $_POST['nicename'] );
-        update_term_meta( $term_id, 'nicename', $group );
-    }
-    /* Update User ID */
-    if( isset( $_POST['user_id'] ) && '' !== $_POST['user_id'] ){
-        $group = sanitize_title( $_POST['user_id'] );
-        update_term_meta( $term_id, 'user_id', $group );
-    }
-    /* Update Old ID */
-    if( isset( $_POST['old_id'] ) && '' !== $_POST['old_id'] ){
-        $group = sanitize_title( $_POST['old_id'] );
-        update_term_meta( $term_id, 'old_id', $group );
-    }
-    /* Update Nickname */
-    if( isset( $_POST['nickname'] ) && '' !== $_POST['nickname'] ){
-        $group = sanitize_title( $_POST['nickname'] );
-        update_term_meta( $term_id, 'nickname', $group );
-    }
-    /* Update Display Name */
-    if( isset( $_POST['name'] ) && '' !== $_POST['name'] ){
-        $group = sanitize_title( $_POST['name'] );
-        update_term_meta( $term_id, 'name', $group );
-    }
+function update_byline_meta( $term_id, $tt_id ){
+  if ( isset( $_POST['series_image'] ) ) {
+		$t_id = $term_id;
+		$term_meta = get_option( "weekend-series_$t_id" );
+		$cat_keys = array_keys( $_POST['series_image'] );
+		foreach ( $cat_keys as $key ) {
+			if ( isset ( $_POST['series_image'][$key] ) ) {
+				$term_meta[$key] = $_POST['series_image'][$key];
+			}
+		}
+		// Save the option array.
+		update_option( "weekend-series_$t_id", $term_meta );
+	}
     /* Update Email */
     if( isset( $_POST['author_email'] ) && '' !== $_POST['author_email'] ){
-        $group = sanitize_email( $_POST['author_email'] );
-        update_term_meta( $term_id, 'author_email', $group );
+        $term_meta = sanitize_email( $_POST['author_email'] );
+        update_term_meta( $term_id, 'author_email', $term_meta );
     }
     /* Update First Name */
     if( isset( $_POST['author_first_name'] ) && '' !== $_POST['author_first_name'] ){
-        $group = sanitize_title( $_POST['author_first_name'] );
-        update_term_meta( $term_id, 'author_first_name', $group );
+        $term_meta = sanitize_text_field( $_POST['author_first_name'] );
+        update_term_meta( $term_id, 'author_first_name', $term_meta );
     }
     /* Update Last Name */
     if( isset( $_POST['author_last_name'] ) && '' !== $_POST['author_last_name'] ){
-        $group = sanitize_title( $_POST['author_last_name'] );
-        update_term_meta( $term_id, 'author_last_name', $group );
+        $term_meta = sanitize_text_field( $_POST['author_last_name'] );
+        update_term_meta( $term_id, 'author_last_name', $term_meta );
     }
     /* Update Website */
     if( isset( $_POST['user_url'] ) && '' !== $_POST['user_url'] ){
-        $group = esc_url( $_POST['user_url'] );
-        update_term_meta( $term_id, 'user_url', $group );
+        $term_meta = esc_url( $_POST['user_url'] );
+        update_term_meta( $term_id, 'user_url', $term_meta );
     }
     /* Update Role */
     if( isset( $_POST['old_role'] ) && '' !== $_POST['old_role'] ){
-        $group = sanitize_title( $_POST['old_role'] );
-        update_term_meta( $term_id, 'old_role', $group );
+        $term_meta = sanitize_text_field( $_POST['old_role'] );
+        update_term_meta( $term_id, 'old_role', $term_meta );
     }
+    /* Update Facebook */
+    if( isset( $_POST['facebook'] ) && '' !== $_POST['facebook'] ){
+        $term_meta = sanitize_text_field( $_POST['facebook'] );
+        update_term_meta( $term_id, 'facebook', $term_meta );
+    }
+    /* Update twitter */
+    if( isset( $_POST['twitter'] ) && '' !== $_POST['twitter'] ){
+        $term_meta = sanitize_text_field( $_POST['twitter'] );
+        update_term_meta( $term_id, 'twitter', $term_meta );
+    }
+    /* Update pinterest */
+    if( isset( $_POST['pinterest'] ) && '' !== $_POST['pinterest'] ){
+        $term_meta = sanitize_text_field( $_POST['pinterest'] );
+        update_term_meta( $term_id, 'pinterest', $term_meta );
+    }
+    /* Update googleplus */
+    if( isset( $_POST['googleplus'] ) && '' !== $_POST['googleplus'] ){
+        $term_meta = sanitize_text_field( $_POST['googleplus'] );
+        update_term_meta( $term_id, 'googleplus', $term_meta );
+    }
+    /* Update instagram */
+    if( isset( $_POST['instagram'] ) && '' !== $_POST['instagram'] ){
+        $term_meta = sanitize_text_field( $_POST['instagram'] );
+        update_term_meta( $term_id, 'instagram', $term_meta );
+    }
+    /* Update linkedin */
+    if( isset( $_POST['linkedin'] ) && '' !== $_POST['linkedin'] ){
+        $term_meta = sanitize_text_field( $_POST['linkedin'] );
+        update_term_meta( $term_id, 'linkedin', $term_meta );
+    }
+
+
 }
