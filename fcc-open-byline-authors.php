@@ -167,7 +167,7 @@ function register_oba_tax() {
 // Action to call the add_filter(s) function
 add_action('wp_loaded', 'byline_function');
 function byline_function() {
-  if ( ! is_admin() ) {
+  if ( ! current_user_can('editor') || current_user_can('administrator') ) {
     add_filter( 'the_author', 'modify_author_name' );
     add_filter( 'author_link', 'modify_author_link', 10, 1 );
   }
